@@ -56,7 +56,7 @@ export default defineConfig((mode: ConfigEnv)=>{
             open: JSON.parse(env.VITE_OPEN),
             proxy: {
                 '/api': {
-                    target: 'http://42.193.249.218:8888/',
+                    target: 'http://localhost:8086', // 后端服务器地址和端口
                     changeOrigin: true,
                     rewrite: (path) => path.replace(/^\/api/, '')
                 }

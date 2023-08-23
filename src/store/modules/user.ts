@@ -54,6 +54,7 @@ export const useUserStore = defineStore({
                             expires: computeDate(1, 2)
                         });
                         this.getLoginUserInfo().then((userRes) => {
+                            // @ts-ignore
                             ElMessage.success(`${formatGreet(new Date())}，${userRes.nickname}`);
                             resolve(res);
                         });

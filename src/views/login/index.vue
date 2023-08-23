@@ -1,13 +1,13 @@
 <template>
   <div class="container">
     <div class="form">
-      <div class="sys-name mb30 flex-center"><img class="logo-img mr5" src="@/assets/logo.png" alt="">SPRING-BOOT-PLUS</div>
+      <div class="sys-name mb30 flex-center"><img class="logo-img mr5" src="@/assets/logo.png" alt="">管理系统</div>
       <el-form ref="ruleFormRef" :model="ruleForm" :rules="rules">
         <el-form-item class="mb25" prop="username">
-          <el-input :prefix-icon="User" size="large" clearable v-model="ruleForm.username" placeholder="请输入用户名"/>
+          <el-input :prefix-icon="User as string" size="large" clearable v-model="ruleForm.username" placeholder="请输入用户名"/>
         </el-form-item>
         <el-form-item class="mb25" prop="password">
-          <el-input :prefix-icon="Lock" size="large" show-password clearable v-model="ruleForm.password"
+          <el-input :prefix-icon="Lock as string" size="large" show-password clearable v-model="ruleForm.password"
                     placeholder="请输入密码"/>
         </el-form-item>
         <el-button size="large" type="primary" @click="login">登录</el-button>
