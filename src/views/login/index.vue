@@ -96,7 +96,7 @@ onMounted(() => {
   }
 }
 
-:deep() {
+:deep {
   .el-button {
     width: 100%;
     font-size: 16px;
