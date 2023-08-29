@@ -29,12 +29,23 @@
 </template>
 
 <script setup lang="ts">
-import {ElMessage, FormRules} from "element-plus";
+import {ElMessage, FormRules, FormInstance} from "element-plus";
 import md5 from "js-md5";
 import {resetSysUserPassword} from "@/api/user";
 
-const pswFormRef = ref()
-let pswData = reactive({
+interface PswDataType {
+  isShow: boolean;
+  row: {
+    id?: number;
+    username?: string;
+    nickname?: string;
+    // 其他可能的属性
+  };
+  password: string;
+}
+
+const pswFormRef = ref<FormInstance | null>(null);
+let pswData = reactive<PswDataType>({
   isShow: false,
   row: {},
   password: ''

@@ -1,11 +1,11 @@
 <template>
   <div class="logo-box" :class="{'width':configure.isCollapse}">
     <div v-if="configure.isCollapse" class="logo-content">
-      <img class="logo-img logo-txt" src="@/assets/logo.png" alt="">
+      <img class="logo-img logo-txt" src="@/assets/awit.ico" alt="">
     </div>
     <div v-else class="logo-content">
-      <img class="logo-img" src="@/assets/logo.png" alt="">
-      <span class="logo-txt ml5">SPRING-BOOT-PLUS</span>
+      <img class="logo-img" src="@/assets/awit.ico" alt="">
+      <span class="logo-txt ml5">爱维特项目管理系统</span>
     </div>
   </div>
 </template>
@@ -19,7 +19,8 @@ const {configure} = storeToRefs(useConfigStoreHook())
 
 <style lang="scss" scoped>
 .logo-img{
-  width: 24px;
+  width: 50px;
+  height: 18px;
 }
 .logo-box{
   width: 220px;
@@ -35,7 +36,7 @@ const {configure} = storeToRefs(useConfigStoreHook())
   }
   .logo-txt{
     font-weight: bold;
-    font-size: 16px;
+    font-size: 14px;
     white-space: nowrap;
     animation: logoAnimation .3s ease;
   }

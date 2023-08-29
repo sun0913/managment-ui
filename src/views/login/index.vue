@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="form">
-      <div class="sys-name mb30 flex-center"><img class="logo-img mr5" src="@/assets/logo.png" alt="">管理系统</div>
+      <div class="sys-name mb30 flex-center"><img class="logo-img mr5" src="@/assets/awit.ico" alt="">项目管理系统</div>
       <el-form ref="ruleFormRef" :model="ruleForm" :rules="rules">
         <el-form-item class="mb25" prop="username">
           <el-input :prefix-icon="User as string" size="large" clearable v-model="ruleForm.username" placeholder="请输入用户名"/>
@@ -62,6 +62,10 @@ onMounted(() => {
   align-items: center;
   width: 100vw;
   height: 100vh;
+  //background-image: url("@/assets/background.jpg");
+  //background-size: cover;
+  //background-position: center; // 将背景图片居中
+  //background-repeat: no-repeat; // 防止背景图片重复
 
   .form {
     width: 400px;
@@ -71,12 +75,14 @@ onMounted(() => {
 
     .sys-name {
       font-weight: bold;
-      font-size: 20px;
+      font-size: 40px;
+      color: black;
       white-space: nowrap;
       animation: logoAnimation .3s ease;
 
       .logo-img {
-        width: 40px;
+        width: 140px;
+        height: 35px;
       }
     }
   }
@@ -96,20 +102,19 @@ onMounted(() => {
   }
 }
 
-:deep {
-  .el-button {
-    width: 100%;
-    font-size: 16px;
-    height: 45px;
-  }
-
-  .el-input__inner {
-    --el-input-inner-height: 45px;
-    font-size: 16px;
-  }
-
-  .el-icon {
-    font-size: 16px;
-  }
+:deep(.el-button) {
+  width: 100%;
+  font-size: 16px;
+  height: 45px;
 }
+
+:deep(.el-input__inner) {
+  --el-input-inner-height: 45px;
+  font-size: 16px;
+}
+
+:deep(.el-icon) {
+  font-size: 16px;
+}
+
 </style>

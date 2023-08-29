@@ -87,11 +87,29 @@ const props = withDefaults(defineProps<{
 }>(), {})
 
 
-// 表单
-let form: any = ref({
+// 定义表单类型
+interface FormType {
+  id?: number;
+  gender: number;
+  status: boolean;
+  username?: string;
+  nickname?: string;
+  password?: string;
+  phone?: string;
+  email?: string;
+  deptId?: number;
+  roleIds?: number[]; // 根据你的需求调整类型
+}
+
+// 设置默认值
+const getDefaultFormValues = (): FormType => ({
+  id: 1, // 你可以根据需要设置合适的默认值
   gender: 1,
   status: true,
-})
+});
+
+// 修改表单变量
+let form = ref<FormType>(getDefaultFormValues());
 // 效验规则
 const rules = reactive<FormRules>({
   username: [
@@ -116,7 +134,7 @@ const rules = reactive<FormRules>({
 })
 // 获取详情
 const getDetails = (id: number | string) => {
-  getSysUser(id).then(res => {
+  getSysUser(String(id)).then(res => {
     form.value = Object.assign({}, form.value, res);
   })
 }
@@ -140,11 +158,9 @@ const openDialog = async (row: any) => {
 const closeDialog = () => {
   dialogData.isShow = false;
   dialogData.id = null;
-  form.value = {
-    gender: 1,
-    status: true
-  };
-}
+  form.value = getDefaultFormValues(); // 使用默认值重置表单
+};
+
 // 提交
 const submit = async () => {
   if (!formRef.value) return;

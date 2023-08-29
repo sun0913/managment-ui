@@ -4,19 +4,24 @@ import {ListParams} from "@/api/types/index";
 export interface GetSysUserListParamsType extends ListParams{}
 
 /** 获取系统用户分页列表返回数据*/
-export type GetSysUserListResult = {
-    id: number,
-    username: string,
-    nickname: string,
-    salt: string,
-    phone: string,
-    email: string,
-    gender: number,
-    head: string,
-    status: boolean,
-    deptId: number,
-    createTime: string,
-    updateTime: string
+export interface GetSysUserListResult {
+    list: UserItem[]; // 用户列表
+    total: number;    // 总数
+}
+
+export interface UserItem {
+    id: number;
+    username: string;
+    nickname: string;
+    salt: string;
+    phone: string;
+    email: string;
+    gender: number;
+    head: string;
+    status: boolean;
+    deptId: number;
+    createTime: string;
+    updateTime: string;
 }
 
 /** 修改个人信息提交数据类型*/

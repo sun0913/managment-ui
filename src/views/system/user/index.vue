@@ -127,9 +127,21 @@ import TableForm from './table-form.vue'
 import ResetPassword from './reset-password.vue'
 import {getSysDeptTreeList} from "@/api/dept";
 import {getSysRoleAllList} from "@/api/role";
+import {UserItem} from "@/api/types/userTypes";
+import { reactive } from 'vue';
 
 /** 查询*/
-let queryForm = ref({})
+const defaultQueryForm = () => ({
+  createStartTime: null,
+  createEndTime: null,
+  username: null,
+  nickname: null,
+  phone: null,
+  roleId: null,
+  deptId: null,
+  status: null,
+});
+let queryForm = ref(defaultQueryForm());
 // 查询
 const onSearch = () => {
   pageData.pageIndex = 1;
@@ -137,7 +149,7 @@ const onSearch = () => {
 }
 // 重置
 const onReset = () => {
-  queryForm.value = {}
+  queryForm.value = defaultQueryForm();
   pageData.pageIndex = 1;
   getTableList();
 }
@@ -156,13 +168,16 @@ const changePage = (page: number) => {
 }
 
 /** 排序*/
-const orderBy = ref({})
+// const orderBy = ref({})
 
 /** 表格*/
 // 表格数据
-const tableData = reactive({
+const tableData = reactive<{
+  data: UserItem[];
+}>({
   data: [],
-})
+});
+
 // 获取表格列表
 const getTableList = () => {
   getSysUserList({...pageData, ...queryForm.value, orderBy: {...orderBy.value}}).then(res => {
@@ -189,14 +204,24 @@ const delTable = (row: any) => {
   })
 }
 // 排序
-const sortChange = ({column, prop, order}) => {
+interface SortInfo {
+  column?: any; // 根据实际情况调整类型
+  prop?: any;   // 根据实际情况调整类型
+  order?: string;
+}
+interface OrderBy {
+  column?: string;
+  asc?: boolean;
+}
+const orderBy = ref<OrderBy>({});
+
+const sortChange = ({column, prop, order}: SortInfo) => {
   if (order) {
     orderBy.value.column = "create_time";
     orderBy.value.asc = order === "ascending";
   } else {
-    orderBy.value = {}
+    orderBy.value = {};
   }
-
   pageData.pageIndex = 1;
   getTableList();
 }

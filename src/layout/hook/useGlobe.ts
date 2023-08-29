@@ -13,6 +13,7 @@ export function useGlobeConfigure() {
     // 设置夜晚模式
     function setNightMode() {
         const hour: number = new Date().getHours();
+        // @ts-ignore
         useConfigStoreHook().storageConfigureChange('isDark', hour > 19);
         useConfigure().setDark(hour > 19);
     }

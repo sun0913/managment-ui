@@ -74,8 +74,8 @@ const logout = () => {
   padding: 20px 10px;
 }
 .avatar-img{
-  width: 35px;
-  height: 35px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
 }
 .el-dropdown-username {

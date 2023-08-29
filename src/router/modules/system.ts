@@ -46,5 +46,14 @@ export default {
                 icon:'ele-user'
             }
         },
+        {
+            path: "/dic",
+            name: "Dic",
+            component: () => import("@/views/system/dic/index.vue"),
+            meta: {
+                title: "字典管理",
+                icon:'ele-user'
+            }
+        },
     ]
 } as RouteConfigsTable;
