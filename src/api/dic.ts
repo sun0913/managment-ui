@@ -7,6 +7,7 @@ enum Api {
     getSysDic = '/sysDic/getSysDic/',
     updateSysDic = '/sysDic/updateSysDic',
     deleteSysDic = '/sysDic/deleteSysDic/',
+    getSysDicByCode = '/sysDic/getSysDicByCode/',
 }
 
 /** 部门*/
@@ -33,6 +34,10 @@ export function updateSysDic(data:any) {
 // 删除部门
 export function deleteSysDic(id:string|number) {
     return http.post<any>(Api.deleteSysDic+id)
+}
+
+export function getSysDicByCode(code:string|number) {
+    return http.post<any>(Api.getSysDicByCode+code)
 }
 
 

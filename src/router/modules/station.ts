@@ -46,5 +46,14 @@ export default {
                 icon:'ele-collection'
             }
         },
+        {
+            path: "/stock",
+            name: "Stock",
+            component: () => import("@/views/station/stock/index.vue"),
+            meta: {
+                title: "库存信息",
+                icon:'ele-shopping-bag'
+            }
+        },
     ]
 } as RouteConfigsTable;
