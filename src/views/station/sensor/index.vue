@@ -3,30 +3,29 @@
     <!--    查询-->
     <el-form :model="queryForm" label-width="110px">
       <el-row :gutter="20">
-        <el-col span="10">
+        <el-col :span="6">
           <el-form-item label="传感器名称">
             <el-input v-model="queryForm.name" clearable placeholder="请输入传感器名称"/>
           </el-form-item>
         </el-col>
-        <el-col span="10">
+        <el-col :span="6">
           <el-form-item label="传感器编号">
             <el-input v-model="queryForm.sensorSn" clearable placeholder="请输入传感器编号"/>
           </el-form-item>
         </el-col>
-        <el-col span="10">
+        <el-col :span="6">
           <el-form-item label="传感器分类">
-            <el-input v-model="queryForm.type" clearable placeholder="请输入传感器分类"/>
-          </el-form-item>
-        </el-col>
-        <el-col span="10">
-          <el-form-item label="状态">
-            <el-select v-model="queryForm.status" clearable placeholder="请选择状态">
-              <el-option label="启用" :value="1"/>
-              <el-option label="禁用" :value="0"/>
+            <el-select v-model="queryForm.type" clearable placeholder="请选择传感器所属公司">
+              <el-option
+                  v-for="item in sensorTypes"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.name">
+              </el-option>
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col span="10">
+        <el-col :span="6">
           <el-form-item label-width="0">
             <el-button type="primary" @click="onSearch">
               <el-icon>
@@ -112,20 +111,29 @@ import {ElMessage, ElMessageBox} from "element-plus";
 import TableForm from './table-form.vue'
 import {deleteStationSensor, getStationSensorList} from "@/api/sensor";
 import {SensorListQueryForm} from "@/api/types/sensorTypes";
+import {getSysDicByCode} from "@/api/dic";
+import {onMounted} from "vue";
 
 const defaultQueryForm = (): SensorListQueryForm => ({
   name: null,
   sensorSn: null,
   type: null,
-  status: null
 })
 /** 查询*/
 let queryForm = ref<SensorListQueryForm>({
   name: null,
   sensorSn: null,
   type: null,
-  status: null
 })
+const sensorTypes = ref([]);
+const loadSensorTypes = async () => {
+  // 使用你的实际接口
+  sensorTypes.value = await getSysDicByCode("company");
+};
+
+onMounted(() => {
+  loadSensorTypes();
+});
 // 查询
 const onSearch = () => {
   pageData.pageIndex = 1;

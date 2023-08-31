@@ -8,7 +8,6 @@ export interface SensorListQueryForm{
     name: string | null;
     sensorSn: string | null;
     type: string | null;
-    status?: number | null;
 }
 
 export interface AddSensorType {
