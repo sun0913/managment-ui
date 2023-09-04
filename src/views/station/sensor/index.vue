@@ -87,14 +87,13 @@
       </el-table-column>
       <el-table-column label="操作" fixed="right" align="center">
         <template #default="{row}">
-          <template v-if="row.code!=='admin'">
+
             <el-button link type="primary" @click="openDialog(row)">
               修改
             </el-button>
             <el-button @click="delTable(row)" link type="danger">
               删除
             </el-button>
-          </template>
         </template>
       </el-table-column>
     </el-table>

@@ -64,7 +64,7 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="是否新购">
+            <el-form-item label="是否新购" prop="purchased">
               <el-radio-group v-model="form.purchased">
                 <el-radio :label="true" border>新购</el-radio>
                 <el-radio :label="false" border>回收</el-radio>
@@ -72,7 +72,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="是否检测">
+            <el-form-item label="是否检测" prop="detected">
               <el-radio-group v-model="form.detected">
                 <el-radio :label="true" border>已检</el-radio>
                 <el-radio :label="false" border>未检</el-radio>
@@ -82,7 +82,7 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="是否维修">
+            <el-form-item label="是否维修" prop="repaired">
               <el-radio-group v-model="form.repaired">
                 <el-radio :label="true" border>维修</el-radio>
                 <el-radio :label="false" border>未修</el-radio>
@@ -90,7 +90,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="是否可用">
+            <el-form-item label="是否可用" prop="status">
               <el-radio-group v-model="form.status">
                 <el-radio :label="true" border>正常</el-radio>
                 <el-radio :label="false" border>故障</el-radio>
@@ -152,6 +152,18 @@ const rules = reactive<FormRules>({
   ],
   purchaseTime: [
     {required: true, message: '请选择新增日期', trigger: 'blur'},
+  ],
+  purchased: [
+    {required: true, trigger: 'blur'},
+  ],
+  detected: [
+    {required: true, trigger: 'blur'},
+  ],
+  status: [
+    {required: true, trigger: 'blur'},
+  ],
+  repaired: [
+    {required: true, trigger: 'blur'},
   ],
 })
 
