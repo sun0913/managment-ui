@@ -18,7 +18,6 @@
                   <el-button @click="removeSensorSn(index)" v-if="index !== 0" style="margin-left: 10px;">删除</el-button>
                   <el-button type="primary" @click="addSensorSn" v-if="index === 0 && !isEditing" style="margin-left: 10px;">添加更多编号</el-button>
                 </div>
-
               </div>
             </el-form-item>
           </el-col>
@@ -140,6 +139,7 @@ const getDefaultFormValues = (): AddSensorType => ({
   detected: 1,
   repaired: 0,
   status: 1,
+  used: 0,
 })
 let form = ref<AddSensorType>((getDefaultFormValues()));
 // 效验规则
@@ -204,7 +204,7 @@ const openDialog = async (row: any) => {
 const closeDialog = () => {
   dialogData.isShow = false;
   dialogData.id = null;
-  form.value = {status: 1, repaired: 0, detected: 1, purchased: 1};
+  form.value = {status: 1, repaired: 0, detected: 1, purchased: 1, used: 0};
   sensorSnList.value = [''];  // 重置多个编号的数组
 }
 // 提交

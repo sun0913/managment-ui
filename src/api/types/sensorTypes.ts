@@ -23,4 +23,5 @@ export interface AddSensorType {
     detected: number | null;
     repaired: number | null;
     status: number;
+    used: number | null;
 }

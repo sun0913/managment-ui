@@ -9,24 +9,24 @@ enum Api {
     addStationSensor = '/station/addStationSensor',
 }
 
-/** 角色*/
-// 角色分页列表
+/** 传感器*/
+// 传感器分页列表
 export function getStationSensorList(data:GetSensorListParamsType) {
     return http.post<any>(Api.getStationSensorList, data)
 }
-// 添加角色
+// 添加传感器
 export function addStationSensor(data:AddSensorType[]) {
     return http.post<any>(Api.addStationSensor,data)
 }
-// 角色详情
+// 传感器详情
 export function getStationSensor(id:string|number) {
     return http.post<any>(Api.getStationSensor+id)
 }
-// 修改角色
+// 修改传感器
 export function updateStationSensor(data:any) {
     return http.post<any>(Api.updateStationSensor,data)
 }
-// 删除角色
+// 删除传感器
 export function deleteStationSensor(id:string|number) {
     return http.post<any>(Api.deleteStationSensor+id)
 }

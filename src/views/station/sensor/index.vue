@@ -39,19 +39,16 @@
               </el-icon>
               <span class="search-btn__left">重置</span>
             </el-button>
+            <el-button type="primary" @click="openDialog">
+              <el-icon class="mr5">
+                <ele-circle-plus/>
+              </el-icon>
+              新 增
+            </el-button>
           </el-form-item>
         </el-col>
       </el-row>
     </el-form>
-    <!--    新 增-->
-    <div class="table-btn-box mb10">
-      <el-button type="primary" @click="openDialog">
-        <el-icon class="mr5">
-          <ele-circle-plus/>
-        </el-icon>
-        新 增
-      </el-button>
-    </div>
     <!--    表格-->
     <el-table :data="tableData.data" border style="width: 100%" row-key="id">
       <el-table-column prop="name" label="传感器名称" align="center"/>
@@ -79,10 +76,16 @@
           <el-tag v-else type="danger" disable-transitions>否</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="status" label="是否可用" align="center">
+      <el-table-column prop="status" label="是否正常" align="center">
         <template #default="scope">
-          <el-tag v-if="scope.row.status===true" type="success" disable-transitions>是</el-tag>
-          <el-tag v-else type="danger" disable-transitions>否</el-tag>
+          <el-tag v-if="scope.row.status===true" type="success" disable-transitions>正常</el-tag>
+          <el-tag v-else type="danger" disable-transitions>故障</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column prop="activated" label="是否使用" align="center">
+        <template #default="scope">
+          <el-tag v-if="scope.row.used" type="success" disable-transitions>已用</el-tag>
+          <el-tag v-else type="danger" disable-transitions>未用</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作" fixed="right" align="center">

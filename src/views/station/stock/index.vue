@@ -50,7 +50,7 @@
       <el-table-column prop="remark" label="备注" align="center"/>
       <el-table-column label="操作" fixed="right" align="center">
         <template #default="{row}">
-            <el-button link type="primary" @click="openDialog(row)">
+            <el-button link type="primary" @click="openDialog(row)" v-if="row.name !== 'SIM卡'">
               详情
             </el-button>
         </template>
