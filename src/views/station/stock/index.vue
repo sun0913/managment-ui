@@ -40,6 +40,7 @@
     </el-form>
     <!--    表格-->
     <el-table :data="tableData.data" border style="width: 100%" row-key="id">
+      <el-table-column prop="codeName" label="设备编码" align="center"/>
       <el-table-column prop="name" label="名称" align="center"/>
       <el-table-column prop="purchaseQuantity" label="采购数量" align="center"/>
       <el-table-column prop="recycleQuantity" label="回收数量" align="center"/>
@@ -50,7 +51,7 @@
       <el-table-column prop="remark" label="备注" align="center"/>
       <el-table-column label="操作" fixed="right" align="center">
         <template #default="{row}">
-            <el-button link type="primary" @click="openDialog(row)" v-if="row.name !== 'SIM卡'">
+            <el-button link type="primary" @click="openDialog(row)">
               详情
             </el-button>
         </template>
@@ -63,7 +64,6 @@
   </el-card>
 </template>
 <script lang="ts" setup>
-import { getStationSensorList} from "@/api/sensor";
 import {getSysDicByCode} from "@/api/dic";
 import {onMounted} from "vue";
 import {StockListQueryForm} from "@/api/types/stockTypes";
@@ -125,11 +125,6 @@ const getTableList = () => {
     pageData.total = res.total;
   })
 }
-
-// const getStockInfoList = async (row: any = {}) => {
-//   // await getStockInfoList({row.name})
-// }
-// 删除
 
 /** 添加，编辑*/
 const tableDialogRef = ref()

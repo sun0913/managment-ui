@@ -4,17 +4,17 @@
       <el-form ref="formRef" :rules="rules" :model="form" label-width="120px">
         <el-row>
           <el-col :span="12">
-            <el-form-item label="传感器名称" prop="name">
-              <el-input v-model="form.name" placeholder="请输入传感器名称"/>
+            <el-form-item label="名称" prop="name">
+              <el-input v-model="form.name" placeholder="请输入名称"/>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row >
           <el-col :span="12">
-            <el-form-item label="传感器编号" style="margin-bottom: 10px;">
+            <el-form-item label="编号" style="margin-bottom: 10px;">
               <div style="display: flex; flex-direction: column; align-items: flex-start;">
                 <div v-for="(sn, index) in sensorSnList" :key="index" style="display: flex; align-items: center; margin-bottom: 10px;">
-                  <el-input v-model="sensorSnList[index]" placeholder="请输入传感器编号" style="flex: 1;"></el-input>
+                  <el-input v-model="sensorSnList[index]" placeholder="请输入编号" style="flex: 1;"></el-input>
                   <el-button @click="removeSensorSn(index)" v-if="index !== 0" style="margin-left: 10px;">删除</el-button>
                   <el-button type="primary" @click="addSensorSn" v-if="index === 0 && !isEditing" style="margin-left: 10px;">添加更多编号</el-button>
                 </div>
@@ -24,9 +24,9 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="传感器分类" prop="type">
+            <el-form-item label="分类" prop="type">
 <!--              <el-input v-model="form.type" placeholder="请输入传感器所属公司"/>-->
-              <el-select v-model="form.type" placeholder="请选择传感器所属公司">
+              <el-select v-model="form.type" placeholder="请选择所属公司">
                 <el-option
                     v-for="item in sensorTypes"
                     :key="item.id"
@@ -145,10 +145,10 @@ let form = ref<AddSensorType>((getDefaultFormValues()));
 // 效验规则
 const rules = reactive<FormRules>({
   name: [
-    {required: true, message: '请输入传感器名称', trigger: 'blur'},
+    {required: true, message: '请输入名称', trigger: 'blur'},
   ],
   type: [
-    {required: true, message: '请输入传感器所属公司', trigger: 'blur'},
+    {required: true, message: '请输入所属公司', trigger: 'blur'},
   ],
   purchaseTime: [
     {required: true, message: '请选择新增日期', trigger: 'blur'},
@@ -212,7 +212,7 @@ const submit = async () => {
   // 首先检查 sensorSnList
   const emptySensorSn = sensorSnList.value.some(sn => !sn);
   if (emptySensorSn) {
-    ElMessage.error('传感器编号是必填项');
+    ElMessage.error('编号是必填项');
     return;
   }
   if (!formRef.value) return;

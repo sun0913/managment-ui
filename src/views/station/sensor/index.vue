@@ -4,18 +4,18 @@
     <el-form :model="queryForm" label-width="110px">
       <el-row :gutter="20">
         <el-col :span="6">
-          <el-form-item label="传感器名称">
-            <el-input v-model="queryForm.name" clearable placeholder="请输入传感器名称"/>
+          <el-form-item label="名称">
+            <el-input v-model="queryForm.name" clearable placeholder="请输入名称"/>
           </el-form-item>
         </el-col>
         <el-col :span="6">
-          <el-form-item label="传感器编号">
-            <el-input v-model="queryForm.sensorSn" clearable placeholder="请输入传感器编号"/>
+          <el-form-item label="编号">
+            <el-input v-model="queryForm.sensorSn" clearable placeholder="请输入编号"/>
           </el-form-item>
         </el-col>
         <el-col :span="6">
-          <el-form-item label="传感器分类">
-            <el-select v-model="queryForm.type" clearable placeholder="请选择传感器所属公司">
+          <el-form-item label="分类">
+            <el-select v-model="queryForm.type" clearable placeholder="请选择所属公司">
               <el-option
                   v-for="item in sensorTypes"
                   :key="item.id"
@@ -51,9 +51,9 @@
     </el-form>
     <!--    表格-->
     <el-table :data="tableData.data" border style="width: 100%" row-key="id">
-      <el-table-column prop="name" label="传感器名称" align="center"/>
-      <el-table-column prop="sensorSn" label="传感器编号" align="center"/>
-      <el-table-column prop="type" label="传感器分类" align="center"/>
+      <el-table-column prop="name" label="名称" align="center"/>
+      <el-table-column prop="sensorSn" label="编号" align="center"/>
+      <el-table-column prop="type" label="所属公司" align="center"/>
       <el-table-column prop="siteId" label="所属气象站" align="center"/>
       <el-table-column prop="supplier" label="供应商" align="center"/>
       <el-table-column prop="price" label="采购单价" align="center"/>
