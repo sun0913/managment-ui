@@ -1,5 +1,5 @@
 import {http} from '@/utils/http'
-import { GetStockListParamsType} from "@/api/types/stockTypes";
+import {GetStockListParamsType, StockInfoListQueryForm} from "@/api/types/stockTypes";
 
 enum Api {
     getStockList = '/station/getStockList',
@@ -16,7 +16,7 @@ export function getStockList(data:GetStockListParamsType) {
 export function getStockInfo(id:string|number) {
     return http.post<any>(Api.getStockInfo+id)
 }
-export function getStockInfoList(name:string) {
-    return http.post<any>(Api.getStockInfoList+name)
+export function getStockInfoList(data:StockInfoListQueryForm) {
+    return http.post<any>(Api.getStockInfoList, data)
 }
 

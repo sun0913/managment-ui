@@ -115,6 +115,11 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
+          <el-col :span="12">
+            <el-form-item label="备注" prop="price">
+              <el-input v-model="form.remark" placeholder="请输入备注信息"/>
+            </el-form-item>
+          </el-col>
         </el-row>
       </el-form>
       <template #footer>

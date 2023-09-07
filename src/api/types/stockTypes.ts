@@ -8,3 +8,9 @@ export interface StockListQueryForm{
     name: string | null;
     type: string | null;
 }
+
+export interface StockInfoListQueryForm{
+    name: string | null;
+    code: string | null;
+    type: string | null;
+}

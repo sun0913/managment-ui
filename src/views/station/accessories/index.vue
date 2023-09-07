@@ -152,6 +152,16 @@ const tableData = reactive({
 // 获取表格列表
 const getTableList = () => {
   getAccessoriesList({...pageData, ...queryForm.value}).then(res => {
+    let sortedData = res.list || [];
+    sortedData.sort((a: {id: number, name: string}, b: {id: number, name: string}) => {
+      if (a.name < b.name) {
+        return -1;
+      } else if (a.name > b.name) {
+        return 1;
+      } else {
+        return a.id - b.id;
+      }
+    });
     tableData.data = res.list || [];
     pageData.total = res.total;
   })

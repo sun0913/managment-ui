@@ -204,6 +204,16 @@ const tableData = reactive({
 // 获取表格列表
 const getTableList = () => {
   getSimList({...pageData, ...queryForm.value}).then(res => {
+    let sortedData = res.list || [];
+    sortedData.sort((a: {id: number, operator: string}, b: {id: number, operator: string}) => {
+      if (a.operator < b.operator) {
+        return -1;
+      } else if (a.operator > b.operator) {
+        return 1;
+      } else {
+        return a.id - b.id;
+      }
+    });
     tableData.data = res.list || [];
     pageData.total = res.total;
   })
