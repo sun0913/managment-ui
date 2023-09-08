@@ -5,12 +5,12 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <el-form-item label="名称">
-            <el-input v-model="queryForm.name" clearable placeholder="请输入名称"/>
+            <el-input v-model="queryForm.name" :suffix-icon="Search as string" clearable placeholder="请输入名称"/>
           </el-form-item>
         </el-col>
         <el-col :span="6">
           <el-form-item label="编号">
-            <el-input v-model="queryForm.sensorSn" clearable placeholder="请输入编号"/>
+            <el-input v-model="queryForm.sensorSn" :suffix-icon="Search as string" clearable placeholder="请输入编号"/>
           </el-form-item>
         </el-col>
         <el-col :span="6">
@@ -115,6 +115,7 @@ import {deleteStationSensor, getStationSensorList} from "@/api/sensor";
 import {SensorListQueryForm} from "@/api/types/sensorTypes";
 import {getSysDicByCode} from "@/api/dic";
 import {onMounted} from "vue";
+import {Search} from "@element-plus/icons-vue";
 
 const defaultQueryForm = (): SensorListQueryForm => ({
   name: null,

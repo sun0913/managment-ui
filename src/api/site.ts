@@ -7,6 +7,7 @@ enum Api {
     getSiteInfo = '/station/getSiteInfo/',
     deleteSite = '/station/deleteSite/',
     addSite = '/station/addSite',
+    uploadSiteImage = '/station/uploadSiteImage',
 }
 
 /** SIM卡*/
@@ -29,4 +30,12 @@ export function updateSite(data:any) {
 // 删除SIM卡
 export function deleteSite(id:string|number) {
     return http.post<any>(Api.deleteSite+id)
+}
+
+export function uploadSiteImage(formData: FormData) {
+    return http.post<any>(Api.uploadSiteImage, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
 }

@@ -5,7 +5,7 @@
       <el-row :gutter="20">
         <el-col :span="7">
           <el-form-item label="运营商">
-            <el-select v-model="queryForm.operator" clearable placeholder="请选择SIM卡所属公司">
+            <el-select v-model="queryForm.operator"  clearable placeholder="请选择SIM卡所属公司">
               <el-option
                   v-for="item in dataTypes.operatorTypes"
                   :key="item.id"
@@ -17,12 +17,12 @@
         </el-col>
         <el-col :span="7">
           <el-form-item label="ICCID">
-            <el-input v-model="queryForm.iccid" clearable placeholder="请输入ICCID"/>
+            <el-input v-model="queryForm.iccid" :suffix-icon="Search as string" clearable placeholder="请输入ICCID"/>
           </el-form-item>
         </el-col>
         <el-col :span="7">
           <el-form-item label="SIM卡分类">
-            <el-select v-model="queryForm.type" clearable placeholder="请选择SIM卡所属公司">
+            <el-select v-model="queryForm.type"  clearable placeholder="请选择SIM卡所属公司">
               <el-option
                   v-for="item in dataTypes.simTypes"
                   :key="item.id"
@@ -135,6 +135,7 @@ import {getSysDicByCode} from "@/api/dic";
 import {onMounted} from "vue";
 import {SimListQueryForm} from "@/api/types/simTypes";
 import {getSimList, deleteSim} from "@/api/sim";
+import {Search} from "@element-plus/icons-vue";
 
 const defaultQueryForm = (): SimListQueryForm => ({
   operator: null,

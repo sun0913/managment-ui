@@ -5,7 +5,7 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <el-form-item label="名称">
-            <el-input v-model="queryForm.name" clearable placeholder="请输入配件名称"/>
+            <el-input v-model="queryForm.name" :suffix-icon="Search as string" clearable placeholder="请输入配件名称"/>
           </el-form-item>
         </el-col>
         <el-col :span="6">
@@ -90,6 +90,7 @@ import {onMounted} from "vue";
 import {getSimList, deleteSim} from "@/api/sim";
 import {AccessoriesListQueryForm} from "@/api/types/accessoriesTypes";
 import {deleteAccessories, getAccessoriesList} from "@/api/accessories";
+import {Search} from "@element-plus/icons-vue";
 
 const defaultQueryForm = (): AccessoriesListQueryForm => ({
   name: null,

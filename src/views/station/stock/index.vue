@@ -5,7 +5,7 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <el-form-item label="名称">
-            <el-input v-model="queryForm.name" clearable placeholder="请输入名称"/>
+            <el-input v-model="queryForm.name" :suffix-icon="Search as string" clearable placeholder="请输入名称"/>
           </el-form-item>
         </el-col>
         <el-col :span="6">
@@ -71,6 +71,7 @@ import {getStockList, getStockInfoList} from "@/api/stock";
 import SensorTableForm  from "@/views/station/stock/sensor-table-form.vue";
 import SimTableForm  from "@/views/station/stock/sim-table-form.vue";
 import AccessoriesTableForm from "@/views/station/stock/accessories-table-form.vue";
+import {Search} from "@element-plus/icons-vue";
 
 const defaultQueryForm = (): StockListQueryForm => ({
   name: null,

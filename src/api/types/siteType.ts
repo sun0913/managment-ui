@@ -27,4 +27,8 @@ export interface AddSiteType {
     image?: string | null;
     maintained: number
     status: number
+    sensorName?: string[]
+    accessoriesName?: string[]
+    simCardInfo?: string[]
+    // sensorList?: string[]
 }

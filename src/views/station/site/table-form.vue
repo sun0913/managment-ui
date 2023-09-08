@@ -59,19 +59,77 @@
         </el-row>
         <el-row>
           <el-col>
+        <!-- 添加传感器/设备 -->
+            <el-form-item label="添加传感器/设备" prop="sensorName">
+              <div class="sensor-container">
+                <el-checkbox-group v-model="form.sensorName">
+                  <FormItemWithDynamicInput
+                      v-for="item in dataTypes.sensorName"
+                      :key="item.id"
+                      :item="item"
+                      :selectedNames="form.sensorName"
+                      :inputMapping="inputSnMapping"
+                  ></FormItemWithDynamicInput>
+                </el-checkbox-group>
+              </div>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col>
+            <!-- 添加传感器/设备 -->
+            <el-form-item label="添加配件" prop="accessoriesName">
+              <div class="sensor-container">
+                <el-checkbox-group v-model="form.accessoriesName">
+                  <FormItemWithDynamicInput
+                      v-for="item in dataTypes.accessoriesName"
+                      :key="item.id"
+                      :item="item"
+                      :selectedNames="form.accessoriesName"
+                      :inputMapping="inputSnMapping"
+                  ></FormItemWithDynamicInput>
+                </el-checkbox-group>
+              </div>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col>
+            <el-form-item label="添加SIM卡" prop="simCardInfo">
+              <div class="sensor-container">
+                <el-checkbox-group v-model="form.simCardInfo">
+                  <FormItemWithDynamicInput
+                      v-for="item in dataTypes.simCardInfo"
+                      :key="item.id"
+                      :item="item"
+                      :selectedNames="form.simCardInfo"
+                      :inputMapping="inputSnMapping"
+                  ></FormItemWithDynamicInput>
+                </el-checkbox-group>
+              </div>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col>
             <el-form-item label="上传图片" prop="image">
               <el-upload
                   list-type="picture-card"
-                  action="上传接口地址"
+                  :http-request="handleFileChange"
                   :file-list="fileList"
                   :on-success="handleUploadSuccess"
                   :on-remove="handleRemove"
                   :before-upload="beforeUpload"
               >
                 <el-icon><Plus /></el-icon>
+                <template #file="{file}">
+                  <div class="el-upload-list__item-thumbnail">
+                    <img :src="getUrl(file)" alt="Uploaded File Preview" class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)" />
+                  </div>
+                </template>
               </el-upload>
               <el-dialog v-model="dialogVisible">
-                <img w-full :src="dialogImageUrl" alt="Preview Image" />
+                <img :src="dialogImageUrl" alt="Preview Image" style="width: 100%;" />
               </el-dialog>
             </el-form-item>
           </el-col>
@@ -92,19 +150,27 @@
 import {ElMessage, FormInstance, FormRules, UploadFile} from "element-plus";
 import {getSysDicByCode} from "@/api/dic";
 import {onMounted} from 'vue';
-import {addSite, getSiteInfo, updateSite} from "@/api/site";
+import {addSite, getSiteInfo, updateSite, uploadSiteImage} from "@/api/site";
 import {AddSiteType} from "@/api/types/siteType";
 import {Plus} from "@element-plus/icons-vue";
+import FormItemWithDynamicInput from './FormItemWithDynamicInput.vue';
+
 
 const formRef = ref<FormInstance>()
 
 // 为 dataTypes 添加一个明确的类型定义
 interface DataType {
   siteTypes: any[]; // 你可以替换为你的实际类型
+  sensorName: any[],
+  accessoriesName: any[]
+  simCardInfo: any[]
 }
 
 const dataTypes: DataType = ref({
   siteTypes: [],
+  sensorName: [],
+  accessoriesName: [],
+  simCardInfo: []
 }).value;
 
 // 为 loadDataTypes 函数的参数添加类型
@@ -115,6 +181,9 @@ const loadDataTypes = async (type: keyof DataType, code: string) => {
 
 onMounted(() => {
   loadDataTypes('siteTypes', 'company');
+  loadDataTypes('sensorName', 'sensor');
+  loadDataTypes('accessoriesName', 'accessories');
+  loadDataTypes('simCardInfo', 'simCard');
 });
 
 const emits = defineEmits<{
@@ -175,58 +244,172 @@ const closeDialog = () => {
   dialogData.isShow = false;
   dialogData.id = null;
   form.value = {maintained: 0, status: 1};
-
+  inputSnMapping.value = {};  // 清空 sensorSnMapping
 }
+
+// 初始化一个空对象
+const inputSnMapping = ref<{ [key: string]: string[] }>({});
+
+// 当传感器名称、配件名称或SIM卡信息被选中时，初始化对应的序列号数组
+watch(() => [...(form.value.sensorName || []), ...(form.value.accessoriesName || []), ...(form.value.simCardInfo || [])], (newNames) => {
+  if (newNames) {
+    newNames.forEach((name: string) => {
+      if (!inputSnMapping.value[name]) {
+        inputSnMapping.value[name] = [''];
+      }
+    });
+  }
+});
+
 // 提交
 const submit = async () => {
-
   if (!formRef.value) return;
   await formRef.value.validate((valid) => {
     if (valid) {
+      let sensorSnMapping: string[] = [];
+      let accessoriesSnMapping: string[] = [];
+      let simCardSnMapping: string[] = [];
+
+      if (Array.isArray(form.value.sensorName)) {
+        form.value.sensorName.forEach((name) => {
+          sensorSnMapping = sensorSnMapping.concat(inputSnMapping.value[name] || []);
+        });
+      }
+
+      if (Array.isArray(form.value.accessoriesName)) {
+        form.value.accessoriesName.forEach((name) => {
+          accessoriesSnMapping = accessoriesSnMapping.concat(inputSnMapping.value[name] || []);
+        });
+      }
+
+      if (Array.isArray(form.value.simCardInfo)) {
+        form.value.simCardInfo.forEach((name) => {
+          simCardSnMapping = simCardSnMapping.concat(inputSnMapping.value[name] || []);
+        });
+      }
+
+      const submitData = {
+        ...form.value,
+        sensorSnMapping,
+        accessoriesSnMapping,
+        simCardSnMapping
+      };
+
       if (form.value.id) {
-        updateSite(form.value).then(() => {
+        updateSite(submitData).then(() => {
           ElMessage.success('操作成功');
           closeDialog();
           emits('refresh');
-        })
+        });
       } else {
-        addSite(form.value).then(() => {
+        addSite(submitData).then(() => {
           ElMessage.success('操作成功');
           closeDialog();
           emits('refresh');
-        })
+        });
       }
     }
-  })
+  });
 }
-const fileList = ref([]);  // 已上传文件列表
+// 已上传的文件列表
+const fileList = ref<UploadFile[]>([]);
+const dialogImageUrl = ref('');  // 用于存储要预览的图片的 URL
+const dialogVisible = ref(false);  // 控制预览对话框的显示/隐藏
 
-const handleUploadSuccess = (response: any, file: any, fileList: any) => {
-  // 上传成功的逻辑
+const getUrl = (file: any) => {
+  return (file as UploadFile).url || '';
+};
+
+// 图片预览
+const handlePictureCardPreview = (file: any) => {
+  dialogImageUrl.value = file.url!;
+  dialogVisible.value = true;
+};
+// 上传成功
+const handleUploadSuccess = (response: any, file: any, fileList: any[]) => {
   ElMessage.success("上传成功");
+
+};
+// 在文件选择或拖拽时触发
+const handleFileChange = (file: File) => {
+  // 创建 FormData 对象
+  const formData = new FormData();
+  formData.append("file", file);
+
+  // 下面的代码是用于本地预览的
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = async (e) => {  // 注意这里添加了 async
+    const newFile: UploadFile = {
+      name: file.name,
+      status: 'uploading',
+      url: e.target?.result as string,
+      uid: parseInt(Math.random().toString(36).substring(2), 36),
+    };
+    fileList.value.push(newFile);
+    await uploadAndPreview(newFile, formData);  // 调用下面定义的 async 函数
+  };
 };
 
-const handleRemove = (file: any, fileList: any) => {
-  // 删除文件的逻辑
+const uploadAndPreview = async (newFile: UploadFile, formData: FormData) => {
+  try {
+    // 使用导入的 uploadSiteImage 函数进行文件上传
+    const response = await uploadSiteImage(formData);
+
+    if (response.status === 200) {
+      newFile.status = 'success';
+      handleUploadSuccess(response, newFile, fileList.value);
+    } else {
+      newFile.status = 'fail';
+      ElMessage.error('上传失败');
+    }
+  } catch (error) {
+    newFile.status = 'fail';
+    ElMessage.error(`上传出错：${error}`);
+  }
+  dialogImageUrl.value = newFile.url!;  // 更新预览图
 };
 
-const dialogImageUrl = ref('')
-const dialogVisible = ref(false)
-const disabled = ref(false)
-const handlePictureCardPreview = (file: UploadFile) => {
-  dialogImageUrl.value = file.url!
-  dialogVisible.value = true
-}
 
-const beforeUpload = (file: any) => {
-  // 上传前的逻辑，例如检查文件大小、格式等
+
+
+// 删除文件
+const handleRemove = (file: any, fileList: any[]) => {
+  ElMessage.success("文件已删除");
 };
+
+// 上传前检查
+const beforeUpload = (file: File) => {
+  const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+  if (!isJpgOrPng) {
+    ElMessage.error('仅支持 JPG/PNG 文件!');
+    return false;
+  }
+  const isLt2M = file.size / 1024 / 1024 < 20;
+  if (!isLt2M) {
+    ElMessage.error('图片大小不能超过 2MB!');
+    return false;
+  }
+  return true;
+};
+
 
 defineExpose({
   openDialog,
+  inputSnMapping,  // 添加这行
 });
 </script>
 
 <style scoped>
-
+.el-checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;  /* 横向排列 */
+}
+/* 确保图片可以根据容器大小自动缩放 */
+.el-upload-list__item-preview {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;  /* 保持宽高比 */
+}
 </style>

@@ -5,12 +5,12 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <el-form-item label="气象站">
-            <el-input v-model="queryForm.name" clearable placeholder="请输入气象站名称"/>
+            <el-input v-model="queryForm.name" :suffix-icon="Search as string" clearable placeholder="请输入气象站名称"/>
           </el-form-item>
         </el-col>
         <el-col :span="6">
           <el-form-item label="序列号">
-            <el-input v-model="queryForm.siteSn" clearable placeholder="请输入气象站序列号"/>
+            <el-input v-model="queryForm.siteSn" :suffix-icon="Search as string" clearable placeholder="请输入气象站序列号"/>
           </el-form-item>
         </el-col>
         <el-col :span="6">
@@ -40,12 +40,12 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <el-form-item label="气象站类型">
-            <el-input v-model="queryForm.code" clearable placeholder="请输入气象站类型"/>
+            <el-input v-model="queryForm.code" :suffix-icon="Search as string" clearable placeholder="请输入气象站类型"/>
           </el-form-item>
         </el-col>
         <el-col :span="6">
           <el-form-item label="安装地点">
-            <el-input v-model="queryForm.location" clearable placeholder="请输入安装地点"/>
+            <el-input v-model="queryForm.location" :suffix-icon="Search as string" clearable placeholder="请输入安装地点"/>
           </el-form-item>
         </el-col>
         <el-col :span="6">
@@ -121,6 +121,7 @@ import {getSysDicByCode} from "@/api/dic";
 import {onMounted} from "vue";
 import {deleteSite, getSiteList} from "@/api/site";
 import {SiteListQueryForm} from "@/api/types/siteType";
+import {Search} from "@element-plus/icons-vue";
 
 const defaultQueryForm = (): SiteListQueryForm => ({
   siteSn: null,

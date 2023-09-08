@@ -5,7 +5,14 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="名称" prop="name">
-              <el-input v-model="form.name" placeholder="请输入名称"/>
+              <el-select v-model="form.type" placeholder="请选择传感器名称">
+                <el-option
+                    v-for="item in dataTypes.sensorName"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.name">
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
@@ -28,7 +35,7 @@
 <!--              <el-input v-model="form.type" placeholder="请输入传感器所属公司"/>-->
               <el-select v-model="form.type" placeholder="请选择所属公司">
                 <el-option
-                    v-for="item in sensorTypes"
+                    v-for="item in dataTypes.sensorTypes"
                     :key="item.id"
                     :label="item.name"
                     :value="item.name">
@@ -118,14 +125,23 @@ import {onMounted} from 'vue';
 
 const formRef = ref<FormInstance>()
 
-const sensorTypes = ref([]);
-const loadSensorTypes = async () => {
+interface DataTypes {
+  sensorName: any[],
+  sensorTypes: any[]
+}
+
+const dataTypes: DataTypes = ref({
+  sensorName: [],
+  sensorTypes: []
+}).value
+const loadDataTypes = async (type: keyof DataTypes, code: string) => {
    // 使用你的实际接口
-  sensorTypes.value = await getSysDicByCode("company");
+  dataTypes[type] = await getSysDicByCode(code);
 };
 
 onMounted(() => {
-  loadSensorTypes();
+  loadDataTypes('sensorName', 'sensor');
+  loadDataTypes('sensorTypes', 'company');
 });
 
 let sensorSnList = ref<string[]>(['']); // 存储多个传感器编号
