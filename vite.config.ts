@@ -59,6 +59,10 @@ export default defineConfig((mode: ConfigEnv)=>{
                     target: 'http://localhost:8086', // 后端服务器地址和端口
                     changeOrigin: true,
                     rewrite: (path) => path.replace(/^\/api/, '')
+                },
+                '/images': {
+                    target: 'http://localhost:8086',
+                    changeOrigin: true
                 }
             }
         }

@@ -5,6 +5,7 @@ import {setupRouter} from "@/router";
 import ElementPlus from "element-plus";
 import * as ElementPlusIconsVue from "@element-plus/icons-vue"
 import 'virtual:svg-icons-register'
+import * as echarts from 'echarts'
 
 
 // import "element-plus/dist/index.css";
@@ -24,6 +25,8 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.config.globalProperties.$icons.push(name)
     app.component(name, component)
 }
+
+app.config.globalProperties.$echarts = echarts;
 
 /** 配置 store*/
 setupStore(app)

@@ -32,10 +32,4 @@ export function deleteSite(id:string|number) {
     return http.post<any>(Api.deleteSite+id)
 }
 
-export function uploadSiteImage(formData: FormData) {
-    return http.post<any>(Api.uploadSiteImage, formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        },
-    });
-}
+

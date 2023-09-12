@@ -30,5 +30,5 @@ export interface AddSiteType {
     sensorName?: string[]
     accessoriesName?: string[]
     simCardInfo?: string[]
-    // sensorList?: string[]
+    remark?: string | null
 }

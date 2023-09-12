@@ -5,7 +5,7 @@
       <div v-for="(inputValue, index) in inputMapping[item.name]" :key="index">
         <el-input
             v-model="inputMapping[item.name][index]"
-            :placeholder="item.name + '的序列号'"
+            :placeholder="item.name + '的信息'"
             class="input-field"
         ></el-input>
         <el-button class="input-button" @click="addInput(item.name)">+</el-button>

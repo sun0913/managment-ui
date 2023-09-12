@@ -93,7 +93,13 @@
           <el-tag v-else type="danger" disable-transitions>禁用</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="image" label="图片" align="center"/>
+      <el-table-column prop="image" width="90" label="图片" align="center">
+        <template #default="scope">
+          <el-image style="width: 70px; height: 70px;"
+                    :src="scope.row.image">
+          </el-image>
+        </template>
+      </el-table-column>
       <el-table-column prop="remark" label="备注" align="center"/>
       <el-table-column label="操作" fixed="right" align="center">
         <template #default="{row}">
