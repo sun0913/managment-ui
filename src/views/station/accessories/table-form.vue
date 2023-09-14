@@ -5,7 +5,14 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="名称" prop="name">
-              <el-input v-model="form.name" placeholder="请输入配件名称"/>
+              <el-select v-model="form.name" placeholder="请选择配件名称">
+                <el-option
+                    v-for="item in dataTypes.accessoriesName"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.name">
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -77,11 +84,13 @@ const formRef = ref<FormInstance>()
 
 // 为 dataTypes 添加一个明确的类型定义
 interface DataType {
-  accessoriesTypes: any[]; // 你可以替换为你的实际类型
+  accessoriesTypes: any[];
+  accessoriesName: any[];
 }
 
 const dataTypes: DataType = ref({
   accessoriesTypes: [],
+  accessoriesName: []
 }).value;
 
 // 为 loadDataTypes 函数的参数添加类型
@@ -92,6 +101,7 @@ const loadDataTypes = async (type: keyof DataType, code: string) => {
 
 onMounted(() => {
   loadDataTypes('accessoriesTypes', 'company');
+  loadDataTypes('accessoriesName', 'accessories');
 });
 
 const emits = defineEmits<{

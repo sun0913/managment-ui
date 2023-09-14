@@ -282,6 +282,8 @@ const closeDialog = () => {
   dialogData.id = null;
   form.value = {maintained: 0, status: 1};
   inputSnMapping.value = {};  // 清空 sensorSnMapping
+  fileList.value = [];  // 清空文件列表
+  imgurl.value = null;  // 清空图片URL
 }
 
 // 初始化一个空对象
@@ -326,30 +328,30 @@ const submit = async () => {
   if (isValid) {
     // 异步代码
     // 初始化为空对象
-    let sensorSnMapping: { [key: string]: string[] } = {};
-    let accessoriesNoMapping: { [key: string]: number[] } = {};
-    let simCardSnMapping: { [key: string]: string[] } = {};
+    // let sensorSnMapping: { [key: string]: string[] } = {};
+    // let accessoriesNoMapping: { [key: string]: number[] } = {};
+    // let simCardSnMapping: { [key: string]: string[] } = {};
+    let deviceInfoMapping: { [key: string]: string[] } = {};
+
 
     if (Array.isArray(form.value.sensorName)) {
       form.value.sensorName.forEach((name) => {
-        sensorSnMapping[name] = inputSnMapping.value[name] || [];
+        deviceInfoMapping[name] = inputSnMapping.value[name] || [];
       });
     }
-    console.log("sensorSnMapping:", sensorSnMapping);
 
     if (Array.isArray(form.value.accessoriesName)) {
       form.value.accessoriesName.forEach((name) => {
-        accessoriesNoMapping[name] = (inputSnMapping.value[name] || []).map(Number);
+        deviceInfoMapping[name] = inputSnMapping.value[name] || [];
       });
     }
-    console.log("accessoriesNoMapping:", accessoriesNoMapping);
 
     if (Array.isArray(form.value.simCardInfo)) {
       form.value.simCardInfo.forEach((name) => {
-        simCardSnMapping[name] = inputSnMapping.value[name] || [];
+        deviceInfoMapping[name] = inputSnMapping.value[name] || [];
       });
     }
-    console.log("simCardSnMapping:", simCardSnMapping);
+    console.log("deviceInfoMapping:", deviceInfoMapping);
     // 创建一个新的对象来存储转换后的数据
     const transformedInputSnMapping: { [key: string]: string | string[] } = {};
 
@@ -368,9 +370,10 @@ const submit = async () => {
     const submitData = {
       ...form.value,
       image: imgurl.value,  // 添加返回的文件ID
-      sensorSnMapping: sensorSnMapping,
-      accessoriesNoMapping: accessoriesNoMapping,
-      simCardSnMapping: simCardSnMapping,
+      // sensorSnMapping: sensorSnMapping,
+      // accessoriesNoMapping: accessoriesNoMapping,
+      // simCardSnMapping: simCardSnMapping,
+      deviceInfoMapping: deviceInfoMapping
     };
 
     if (form.value.id) {

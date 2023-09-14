@@ -14,7 +14,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="6">
-          <el-form-item label="分类">
+          <el-form-item label="所属公司">
             <el-select v-model="queryForm.type" clearable placeholder="请选择所属公司">
               <el-option
                   v-for="item in sensorTypes"
@@ -52,7 +52,7 @@
     <!--    表格-->
     <el-table :data="tableData.data" border style="width: 100%" row-key="id">
       <el-table-column prop="name" label="名称" align="center"/>
-      <el-table-column prop="sensorSn" label="编号" align="center"/>
+      <el-table-column prop="sensorSn" label="编号" align="center" width="200px"/>
       <el-table-column prop="type" label="所属公司" align="center"/>
       <el-table-column prop="siteId" label="所属气象站" align="center"/>
       <el-table-column prop="supplier" label="供应商" align="center"/>

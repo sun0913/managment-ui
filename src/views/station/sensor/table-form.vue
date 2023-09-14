@@ -5,7 +5,7 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="名称" prop="name">
-              <el-select v-model="form.type" placeholder="请选择传感器名称">
+              <el-select v-model="form.name" placeholder="请选择传感器名称">
                 <el-option
                     v-for="item in dataTypes.sensorName"
                     :key="item.id"

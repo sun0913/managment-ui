@@ -13,7 +13,7 @@ export default function useUpload() {
     //上传的文件
     const fileList = ref<UploadFile[]>([])
     //上传图片的地址
-    const imgurl = ref('');
+    const imgurl = ref<string | null>('');
     //删除图片
     const handleRemove = (file: UploadFile) => {
         console.log(file)
@@ -22,7 +22,7 @@ export default function useUpload() {
     }
     //点击预览图片
     const handlePictureCardPreview = (file: UploadFile) => {
-        dialogImageUrl.value = imgurl.value;
+        dialogImageUrl.value = imgurl.value!
         dialogVisible.value = true
     }
     const chosenFile = ref<File | null>(null); // 这里新增一行

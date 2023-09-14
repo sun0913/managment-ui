@@ -74,8 +74,17 @@
     </el-form>
     <!--    表格-->
     <el-table :data="tableData.data" border style="width: 100%" row-key="id">
+      <el-table-column prop="image" width="90" label="图片" align="center">
+        <template #default="scope">
+          <el-image style="width: 70px; height: 70px;"
+                    :src="scope.row.image"
+                    :fit="'contain'"
+                    :preview-src-list="[scope.row.image as string]">
+          </el-image>
+        </template>
+      </el-table-column>
       <el-table-column prop="name" label="名称" align="center"/>
-      <el-table-column prop="siteSn" label="序列号" align="center"/>
+      <el-table-column prop="siteSn" label="序列号" align="center" width="180px"/>
       <el-table-column prop="code" label="类型" align="center"/>
       <el-table-column prop="type" label="所属公司" align="center"/>
       <el-table-column prop="location" label="安装地点" align="center"/>
@@ -91,13 +100,6 @@
         <template #default="scope">
           <el-tag v-if="scope.row.status===true" type="success" disable-transitions>启用</el-tag>
           <el-tag v-else type="danger" disable-transitions>禁用</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column prop="image" width="90" label="图片" align="center">
-        <template #default="scope">
-          <el-image style="width: 70px; height: 70px;"
-                    :src="scope.row.image">
-          </el-image>
         </template>
       </el-table-column>
       <el-table-column prop="remark" label="备注" align="center"/>
@@ -239,4 +241,11 @@ const openDialog = async (row: any = {}) => {
 }
 getTableList();
 </script>
-<style></style>
+<style scoped>
+.el-image-viewer__wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+</style>

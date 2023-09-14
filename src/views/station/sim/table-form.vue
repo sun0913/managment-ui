@@ -5,7 +5,7 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="运营商" prop="operator">
-              <el-select v-model="form.operator" placeholder="请选择运营商名称">
+              <el-select v-model="form.operator" placeholder="请选择运营商名称" @change="handleOperatorChange">
                 <el-option
                     v-for="item in dataTypes.operatorTypes"
                     :key="item.id"
@@ -189,6 +189,8 @@ const getDefaultFormValues = (): AddSimType => ({
   purchased: 1,
   used: 0,
 })
+
+
 let form = ref<AddSimType>((getDefaultFormValues()));
 // 效验规则
 const rules = reactive<FormRules>({
@@ -254,6 +256,10 @@ const closeDialog = () => {
   form.value = { name: 'SIM卡',activated: 0,status: 1, purchased: 1, used: 0 };
   iccidList.value = [''];
   imeiList.value = [''];
+}
+
+const handleOperatorChange = (value: string) => {
+  form.value.name = value;
 }
 // 提交
 const submit = async () => {
