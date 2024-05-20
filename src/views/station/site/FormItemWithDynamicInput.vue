@@ -2,7 +2,7 @@
   <div class="item-container">
     <el-checkbox :label="item.name" :value="item.name"></el-checkbox>
     <div v-if="Array.isArray(selectedNames) && selectedNames.includes(item.name)">
-      <div v-for="(inputValue, index) in inputMapping[item.name]" :key="index">
+      <div v-for="(inputValue, index) in inputMapping[item.name]  || []" :key="index">
         <el-input
             v-model="inputMapping[item.name][index]"
             :placeholder="item.name + '的信息'"
@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, PropType } from 'vue';
+import { defineProps, PropType, watch, ref } from 'vue';
 
 interface Item {
   name: string;
@@ -40,7 +40,31 @@ const props = defineProps({
     type: Object as PropType<InputMapping>,
     required: true,
   },
+  stationSiteInfoList: {
+    type: Array as PropType<Array<{ deviceName: string; deviceSn: string }>>,
+    default: () => [],
+  },
+  isEditMode: {
+    type: Boolean,
+    default: false,
+  },
 });
+watch(() => props.stationSiteInfoList, (newList) => {
+  newList.forEach((info) => {
+    if (info.deviceName === props.item.name) {
+      // 如果是编辑模式并且selectedNames中还没有这个deviceName，则添加它
+      if (props.isEditMode && !props.selectedNames.includes(info.deviceName)) {
+        props.selectedNames.push(info.deviceName);
+      }
+
+      if (!props.inputMapping[info.deviceName]) {
+        props.inputMapping[info.deviceName] = [info.deviceSn];
+      } else if (!props.inputMapping[info.deviceName].includes(info.deviceSn)) {
+        props.inputMapping[info.deviceName].push(info.deviceSn);
+      }
+    }
+  });
+}, { immediate: true });
 
 const addInput = (name: string | number) => {
   if (!props.inputMapping[name]) {

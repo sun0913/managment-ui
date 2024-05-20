@@ -79,7 +79,8 @@
           <el-image style="width: 70px; height: 70px;"
                     :src="scope.row.image"
                     :fit="'contain'"
-                    :preview-src-list="[scope.row.image as string]">
+                    :preview-src-list="[scope.row.image as string]"
+          >
           </el-image>
         </template>
       </el-table-column>
@@ -103,10 +104,13 @@
         </template>
       </el-table-column>
       <el-table-column prop="remark" label="备注" align="center"/>
-      <el-table-column label="操作" fixed="right" align="center">
+      <el-table-column label="操作" fixed="right" align="center" width="160px">
         <template #default="{row}">
           <el-button link type="primary" @click="openDialog(row)">
             修改
+          </el-button>
+          <el-button link type="primary" @click="openDetails(row)">
+            详情
           </el-button>
           <el-button @click="delTable(row)" link type="danger">
             删除
@@ -120,7 +124,9 @@
 
     <!--    添加，编辑弹框-->
     <TableForm ref="tableDialogRef" @refresh="getTableList"/>
+    <DetailsForm ref="detailsFormRef"/>
   </el-card>
+
 </template>
 <script lang="ts" setup>
 import {ElMessage, ElMessageBox} from "element-plus";
@@ -130,6 +136,7 @@ import {onMounted} from "vue";
 import {deleteSite, getSiteList} from "@/api/site";
 import {SiteListQueryForm} from "@/api/types/siteType";
 import {Search} from "@element-plus/icons-vue";
+import DetailsForm from './DetailsForm.vue';
 
 const defaultQueryForm = (): SiteListQueryForm => ({
   siteSn: null,
@@ -166,6 +173,7 @@ const loadDataTypes = async (type: keyof DataType, code: string) => {
 
 onMounted(() => {
   loadDataTypes('siteTypes', 'company');
+  console.log("After mounted, detailsFormRef:", detailsFormRef.value);
 });
 // 查询
 const onSearch = () => {
@@ -233,6 +241,15 @@ const delTable = (row: any) => {
   })
 }
 
+const detailsFormRef = ref();
+const openDetails = async (row: any) => {
+  await detailsFormRef.value.openDetails(row);
+};
+console.log("detailsFormRef:", detailsFormRef.value);
+
+nextTick(() => {
+  console.log("detailsFormRef after nextTick:", detailsFormRef.value);
+});
 /** 添加，编辑*/
 const tableDialogRef = ref()
 // 打开弹框
@@ -242,10 +259,14 @@ const openDialog = async (row: any = {}) => {
 getTableList();
 </script>
 <style scoped>
+.el-table {
+  position: relative;
+  z-index: 2;
+}
+
 .el-image-viewer__wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
+  position: relative;
+  z-index: 10000 !important;
 }
 
 </style>

@@ -76,6 +76,8 @@
                       :item="item"
                       :selectedNames="form.sensorName"
                       :inputMapping="inputSnMapping"
+                      :stationSiteInfoList="stationSiteInfoList"
+                      :isEditMode="dialogData.title === '编辑'"
                   ></FormItemWithDynamicInput>
                 </el-checkbox-group>
               </div>
@@ -94,6 +96,8 @@
                       :item="item"
                       :selectedNames="form.accessoriesName"
                       :inputMapping="inputSnMapping"
+                      :stationSiteInfoList="stationSiteInfoList"
+                      :isEditMode="dialogData.title === '编辑'"
                   ></FormItemWithDynamicInput>
                 </el-checkbox-group>
               </div>
@@ -111,6 +115,8 @@
                       :item="item"
                       :selectedNames="form.simCardInfo"
                       :inputMapping="inputSnMapping"
+                      :stationSiteInfoList="stationSiteInfoList"
+                      :isEditMode="dialogData.title === '编辑'"
                   ></FormItemWithDynamicInput>
                 </el-checkbox-group>
               </div>
@@ -178,7 +184,7 @@
 // 表单
 import {ElMessage, FormInstance, FormRules, UploadFile} from "element-plus";
 import {getSysDicByCode} from "@/api/dic";
-import {onMounted} from 'vue';
+import {onMounted, PropType} from 'vue';
 import {addSite, getSiteInfo, updateSite} from "@/api/site";
 import {AddSiteType} from "@/api/types/siteType";
 import {Delete, Plus, ZoomIn} from "@element-plus/icons-vue";
@@ -207,6 +213,8 @@ const dataTypes: DataType = ref({
 const loadDataTypes = async (type: keyof DataType, code: string) => {
   dataTypes[type] = await getSysDicByCode(code);
 };
+
+const stationSiteInfoList = ref([]);
 
 onMounted(() => {
   loadDataTypes('siteTypes', 'company');
@@ -253,6 +261,10 @@ const getDetails = (id: number | string) => {
       status: 'success',
     }];
     imgurl.value = form.value.image as string;
+
+    // 处理 stationSiteInfoList
+    // 设置 stationSiteInfoList 的值
+    stationSiteInfoList.value = res.stationSiteInfoList;
   })
 }
 // 弹框数据
@@ -317,6 +329,15 @@ const getUrl = (file: any) => {
   return (file as UploadFile).url || '';
 };
 
+const submitData = reactive({
+  // 初始化其他需要提交的字段
+  deviceInfoMapping: {}
+});
+// 使用 watchEffect 来监听 inputSnMapping 的变化
+watchEffect(() => {
+  // 更新 submitData.deviceInfoMapping
+  submitData.deviceInfoMapping = { ...inputSnMapping.value };
+});
 // 提交
 const submit = async () => {
   console.log("submit function called"); // 添加这一行来检查函数是否被调用
@@ -326,13 +347,7 @@ const submit = async () => {
     isValid = valid;
   });
   if (isValid) {
-    // 异步代码
-    // 初始化为空对象
-    // let sensorSnMapping: { [key: string]: string[] } = {};
-    // let accessoriesNoMapping: { [key: string]: number[] } = {};
-    // let simCardSnMapping: { [key: string]: string[] } = {};
     let deviceInfoMapping: { [key: string]: string[] } = {};
-
 
     if (Array.isArray(form.value.sensorName)) {
       form.value.sensorName.forEach((name) => {
@@ -367,23 +382,21 @@ const submit = async () => {
       formData.append("file", file.raw as File);  // 假设 file.raw 是原始的 File 对象
     });
 
-    const submitData = {
+    // 在提交数据前，将 form.value 和 imgurl.value 合并到 submitData 中
+    const finalSubmitData = {
+      ...submitData,
       ...form.value,
-      image: imgurl.value,  // 添加返回的文件ID
-      // sensorSnMapping: sensorSnMapping,
-      // accessoriesNoMapping: accessoriesNoMapping,
-      // simCardSnMapping: simCardSnMapping,
-      deviceInfoMapping: deviceInfoMapping
+      image: imgurl.value
     };
 
     if (form.value.id) {
-      updateSite(submitData).then(() => {
+      updateSite(finalSubmitData).then(() => {
         ElMessage.success('操作成功');
         closeDialog();
         emits('refresh');
       });
     } else {
-      addSite(submitData).then(() => {
+      addSite(finalSubmitData).then(() => {
         ElMessage.success('操作成功');
         closeDialog();
         emits('refresh');
